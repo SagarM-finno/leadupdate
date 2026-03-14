@@ -299,8 +299,32 @@
 <button class="debug-toggle" onclick="document.getElementById('dbg').classList.toggle('show')">🐛</button>
 <div class="debug-log" id="dbg"></div>
 
-<script src="https://live.zwidgets.com/js-sdk/1.2/ZohoEmbeddedApp.js"></script>
 <script>
+// ═══ DYNAMIC SDK LOADER ═══
+// Load SDK with serviceOrigin and frameorigin params for Link-type web tabs
+(function() {
+  var sdkBase = "https://live.zwidgets.com/js-sdk/1.2/ZohoEmbeddedApp.js";
+  var params = new URLSearchParams(window.location.search);
+  // If already loaded as widget (has serviceOrigin in URL), use plain SDK
+  // If loaded as link, inject serviceOrigin params
+  if (!params.has('serviceOrigin')) {
+    sdkBase += "?serviceOrigin=https%3A%2F%2Fcrm.zoho.in&frameorigin=https%3A%2F%2Fcrm.zoho.in";
+  }
+  var s = document.createElement('script');
+  s.src = sdkBase;
+  s.onload = function() { initApp(); };
+  s.onerror = function() {
+    // Fallback: try without params
+    var s2 = document.createElement('script');
+    s2.src = "https://live.zwidgets.com/js-sdk/1.2/ZohoEmbeddedApp.js";
+    s2.onload = function() { initApp(); };
+    document.head.appendChild(s2);
+  };
+  document.head.appendChild(s);
+})();
+
+function initApp() {
+
 // ═══ DEBUG LOGGER ═══
 function log(msg, type) {
   var d = document.getElementById('dbg');
@@ -321,44 +345,65 @@ var pk = { Events: {}, Calls: {}, Leads: {}, Deals: {} };
 var sdkEl = document.getElementById('sdkStatus');
 
 log('Initializing Zoho SDK…');
+log('Current URL: ' + window.location.href);
+log('Parent origin: ' + (document.referrer || 'unknown'));
+log('ZOHO object exists: ' + (typeof ZOHO !== 'undefined'));
 
-ZOHO.embeddedApp.on("PageLoad", function(data) {
+function onSDKReady(source) {
+  if (sdkReady) return;
   sdkReady = true;
-  log('✅ SDK PageLoad fired. Data: ' + JSON.stringify(data), 'ok');
-
+  log('✅ SDK ready via ' + source, 'ok');
   sdkEl.className = 'sdk-status ready';
   sdkEl.textContent = '✅ Connected to Zoho CRM';
-
-  // Fetch picklists
   fetchPK();
-
-  // Get current user
   ZOHO.CRM.CONFIG.getCurrentUser().then(function(r) {
     if (r && r.users && r.users[0]) {
       hostName = r.users[0].full_name || r.users[0].first_name || '';
       log('Current user: ' + hostName, 'ok');
     }
-  }).catch(function(e) {
-    log('getCurrentUser error: ' + JSON.stringify(e), 'warn');
+  }).catch(function(e) { log('getCurrentUser error: ' + JSON.stringify(e), 'warn'); });
+}
+
+// Register PageLoad listener
+ZOHO.embeddedApp.on("PageLoad", function(data) {
+  log('PageLoad fired. Data: ' + JSON.stringify(data));
+  onSDKReady('PageLoad');
+});
+
+// Init
+ZOHO.embeddedApp.init()
+  .then(function() {
+    log('init() resolved', 'ok');
+    setTimeout(function() {
+      if (!sdkReady) {
+        log('PageLoad not fired, activating via init fallback…', 'warn');
+        onSDKReady('init-fallback');
+      }
+    }, 2000);
+  })
+  .catch(function(e) {
+    log('init() failed: ' + JSON.stringify(e), 'err');
+    sdkEl.className = 'sdk-status error';
+    sdkEl.textContent = '❌ SDK init failed. Retrying…';
+    // Retry once
+    setTimeout(function() {
+      ZOHO.embeddedApp.init().then(function() {
+        log('Retry init() resolved', 'ok');
+        setTimeout(function() { if (!sdkReady) onSDKReady('retry-fallback'); }, 1500);
+      }).catch(function() {
+        log('Retry also failed', 'err');
+        sdkEl.textContent = '❌ Cannot connect to Zoho CRM.';
+      });
+    }, 1000);
   });
-});
 
-ZOHO.embeddedApp.init().then(function() {
-  log('embeddedApp.init() resolved', 'ok');
-}).catch(function(e) {
-  log('embeddedApp.init() FAILED: ' + JSON.stringify(e), 'err');
-  sdkEl.className = 'sdk-status error';
-  sdkEl.textContent = '❌ Failed to connect to Zoho CRM. Make sure this widget is loaded inside Zoho.';
-});
-
-// Timeout check
+// Last resort timeout
 setTimeout(function() {
   if (!sdkReady) {
-    log('⚠️ SDK not ready after 5s. PageLoad may not have fired.', 'warn');
-    sdkEl.className = 'sdk-status error';
-    sdkEl.textContent = '⚠️ Zoho CRM connection timeout. Try refreshing.';
+    log('⚠️ Forced activation after 6s…', 'warn');
+    onSDKReady('timeout');
   }
-}, 5000);
+}, 6000);
 
 // ═══ PICKLISTS ═══
 function fetchPK() {
@@ -641,6 +686,8 @@ function reset() {
   document.querySelectorAll('.tb').forEach(function(e) { e.classList.remove('active') });
   upSt();
 }
+
+} // end initApp
 </script>
 </body>
 </html>
