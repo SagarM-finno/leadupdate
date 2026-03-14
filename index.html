@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Lead Follow-up Workflow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:#f4f2ee;--sf:#fff;--sa:#faf9f7;--sh:#f7f5f2;
+      --bd:#e5e1db;--bf:#c4a87a;
+      --t1:#1c1814;--t2:#6b6159;--t3:#9c9285;
+      --ac:#b8860b;--al:#f8f0dc;--ad:#8b6508;
+      --ok:#2d8a4e;--ol:#e6f4ec;--er:#c0392b;
+      --r:12px;--rs:8px;--rl:16px;
+      --tr:0.25s cubic-bezier(0.4,0,0.2,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+
+    .wrap{max-width:860px;margin:0 auto;padding:24px 20px 80px}
+
+    /* Header */
+    .hdr{text-align:center;margin-bottom:24px}
+    .hdr h1{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:22px;letter-spacing:-0.5px}
+    .hdr p{color:var(--t2);font-size:13px;margin-top:4px}
+
+    /* Stepper */
+    .stepper{display:flex;justify-content:center;align-items:center;margin-bottom:28px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:4px 0}
+    .st{display:flex;align-items:center;gap:6px;flex-shrink:0}
+    .st-c{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;transition:all var(--tr);flex-shrink:0}
+    .st.done .st-c{background:var(--ok);color:#fff}
+    .st.active .st-c{background:var(--ac);color:#fff;box-shadow:0 0 0 3px var(--al)}
+    .st.pending .st-c{background:#cac4bc;color:var(--t3)}
+    .st-l{font-size:11.5px;font-weight:600;white-space:nowrap}
+    .st.done .st-l{color:var(--ok)}.st.active .st-l{color:var(--ac)}.st.pending .st-l{color:var(--t3)}
+    .st-x{width:28px;height:2px;background:var(--bd);margin:0 6px;flex-shrink:0;transition:background var(--tr)}
+    .st-x.done{background:var(--ok)}
+
+    /* Card */
+    .card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rl);padding:24px;box-shadow:0 1px 3px rgba(26,22,18,0.06);animation:fu .3s ease-out}
+    @keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    .ct{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:18px;margin-bottom:3px;letter-spacing:-0.3px}
+    .cs{color:var(--t2);font-size:13px;margin-bottom:20px}
+
+    /* Form */
+    .fg{margin-bottom:16px}
+    .fg label{display:block;font-size:12px;font-weight:600;color:var(--t2);margin-bottom:5px;letter-spacing:0.15px}
+    .fg label .rq{color:var(--er);margin-left:2px}
+    input[type="text"],input[type="date"],input[type="time"],input[type="number"],input[type="datetime-local"],select,textarea{
+      width:100%;padding:10px 12px;border:1.5px solid var(--bd);border-radius:var(--rs);
+      font-family:'DM Sans',sans-serif;font-size:14px;color:var(--t1);background:var(--sf);
+      transition:border-color var(--tr),box-shadow var(--tr);outline:none;
+      -webkit-appearance:none;appearance:none}
+    input:focus,select:focus,textarea:focus{border-color:var(--bf);box-shadow:0 0 0 3px var(--al)}
+    textarea{resize:vertical;min-height:80px}
+    select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239c9285' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+    .fr{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    .divider{border:none;border-top:1px solid var(--bd);margin:20px 0}
+    .slbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--t3);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    .slbl::after{content:'';flex:1;height:1px;background:var(--bd)}
+
+    /* Search */
+    .sbox{position:relative;margin-bottom:18px}
+    .sbox input{padding-left:38px;height:46px;font-size:15px;border-radius:var(--r)}
+    .sbox .si{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--t3);pointer-events:none}
+
+    /* List */
+    .li{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1.5px solid var(--bd);border-radius:var(--r);margin-bottom:8px;cursor:pointer;transition:all var(--tr);background:var(--sf);-webkit-tap-highlight-color:transparent}
+    .li:hover,.li:active{border-color:var(--bf);background:var(--sh)}
+    .li.sel{border-color:var(--ac);background:var(--al)}
+    .li-l{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+    .li-n{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .li-m{font-size:12px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .li-b{font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;background:var(--sa);color:var(--t2);border:1px solid var(--bd);white-space:nowrap;flex-shrink:0;margin-left:10px}
+
+    /* Toggle */
+    .tg{display:flex;gap:10px;margin-bottom:20px}
+    .tb{flex:1;padding:14px 10px;border:2px solid var(--bd);border-radius:var(--r);background:var(--sf);cursor:pointer;text-align:center;transition:all var(--tr);font-family:'DM Sans',sans-serif;-webkit-tap-highlight-color:transparent}
+    .tb:hover,.tb:active{border-color:var(--bf)}
+    .tb.active{border-color:var(--ac);background:var(--al)}
+    .tb .ti{font-size:28px;display:block;margin-bottom:4px}
+    .tb .tl{font-size:13.5px;font-weight:600}
+    .tb .td{font-size:11px;color:var(--t2);margin-top:2px}
+
+    /* Lead banner */
+    .lb{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--al);border:1.5px solid var(--ac);border-radius:var(--rs);margin-bottom:20px}
+    .la{width:34px;height:34px;border-radius:50%;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
+    .li2{flex:1;min-width:0}
+    .li2 .n{font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .li2 .d{font-size:11px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    /* Buttons */
+    .br{display:flex;justify-content:space-between;align-items:center;margin-top:22px;padding-top:16px;border-top:1px solid var(--bd);gap:10px}
+    .btn{padding:10px 20px;border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:600;border:none;cursor:pointer;transition:all var(--tr);display:inline-flex;align-items:center;gap:6px;-webkit-tap-highlight-color:transparent;touch-action:manipulation;white-space:nowrap}
+    .bp{background:var(--ac);color:#fff}.bp:hover{background:var(--ad)}.bp:disabled{background:var(--bd);color:var(--t3);cursor:not-allowed}
+    .bs{background:transparent;color:var(--t2);border:1.5px solid var(--bd)}.bs:hover{background:var(--sa);border-color:var(--bf)}
+    .bg{background:var(--ok);color:#fff}.bg:hover{background:#24713f}.bg:disabled{background:var(--bd);color:var(--t3);cursor:not-allowed}
+
+    .hidden{display:none!important}
+    .loading{text-align:center;padding:32px 16px;color:var(--t2);font-size:13px}
+    .spinner{display:inline-block;width:16px;height:16px;border:2.5px solid var(--bd);border-top-color:var(--ac);border-radius:50%;animation:sp .6s linear infinite}
+    .spinner-lg{width:22px;height:22px;margin-bottom:8px}
+    @keyframes sp{to{transform:rotate(360deg)}}
+    .empty{text-align:center;padding:32px 16px;color:var(--t3);font-size:13px}
+    .empty .ei{font-size:28px;margin-bottom:6px;opacity:0.5}
+
+    .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--t1);color:#fff;padding:10px 20px;border-radius:var(--r);font-size:13px;font-weight:500;box-shadow:0 8px 32px rgba(26,22,18,0.15);transition:transform .3s ease;z-index:100;max-width:90vw;text-align:center}
+    .toast.show{transform:translateX(-50%) translateY(0)}
+
+    /* Note preview */
+    .np{background:var(--sa);border:1.5px dashed var(--bd);border-radius:var(--rs);padding:12px 14px;margin-top:12px}
+    .np .np-l{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:var(--t3);margin-bottom:5px}
+    .np .np-t{font-weight:700;font-size:13.5px;margin-bottom:3px;color:var(--t1);word-break:break-word}
+    .np .np-b{font-size:12.5px;color:var(--t2);white-space:pre-wrap;line-height:1.5;max-height:70px;overflow-y:auto;word-break:break-word}
+
+    /* Success */
+    .succ{text-align:center;padding:40px 16px;animation:fu .35s ease-out}
+    .succ-i{width:64px;height:64px;border-radius:50%;background:var(--ol);color:var(--ok);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 16px}
+    .succ h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:700;margin-bottom:6px}
+    .succ p{color:var(--t2);font-size:13px;max-width:380px;margin:0 auto 22px;line-height:1.6}
+
+    /* ═══ MOBILE ═══ */
+    @media(max-width:768px){
+      .wrap{padding:16px 12px 70px}
+      .hdr h1{font-size:19px}
+      .card{padding:18px 16px;border-radius:var(--r)}
+      .ct{font-size:16px}
+      .fr,.fr3{grid-template-columns:1fr}
+      .st-l{display:none}
+      .st-x{width:18px;margin:0 4px}
+      .st-c{width:28px;height:28px;font-size:11px}
+      .tg{gap:8px}
+      .tb{padding:12px 8px}
+      .tb .ti{font-size:24px}
+      .tb .tl{font-size:12.5px}
+      .tb .td{font-size:10px}
+      .br{flex-wrap:wrap}
+      .btn{padding:10px 16px;font-size:13px;flex:1;justify-content:center;min-width:0}
+      .sbox input{height:44px;font-size:14px}
+      .lb{padding:8px 12px;gap:8px}
+      .la{width:30px;height:30px;font-size:12px}
+    }
+
+    @media(max-width:380px){
+      .wrap{padding:12px 8px 60px}
+      .card{padding:14px 12px}
+      .hdr h1{font-size:17px}
+      .btn{padding:9px 12px;font-size:12.5px}
+    }
+
+    /* Safe area for notched phones */
+    @supports(padding:max(0px)){
+      .wrap{padding-bottom:max(80px,env(safe-area-inset-bottom))}
+      .toast{bottom:max(20px,env(safe-area-inset-bottom))}
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hdr">
+    <h1>Lead Follow-up Workflow</h1>
+    <p>Search → Update → Follow-up → Deal</p>
+  </div>
+
+  <div class="stepper" id="stepper">
+    <div class="st active" data-step="0"><div class="st-c">1</div><span class="st-l">Lead</span></div>
+    <div class="st-x" data-conn="0"></div>
+    <div class="st pending" data-step="1"><div class="st-c">2</div><span class="st-l">Type</span></div>
+    <div class="st-x" data-conn="1"></div>
+    <div class="st pending" data-step="2"><div class="st-c">3</div><span class="st-l">Update</span></div>
+    <div class="st-x" data-conn="2"></div>
+    <div class="st pending" data-step="3"><div class="st-c">4</div><span class="st-l">Follow-up</span></div>
+    <div class="st-x" data-conn="3"></div>
+    <div class="st pending" data-step="4"><div class="st-c">5</div><span class="st-l">Deal</span></div>
+  </div>
+
+  <!-- STEP 0 -->
+  <div class="card sc" id="step-0">
+    <div class="ct">Find a Lead</div>
+    <div class="cs">Search by name, email, or company.</div>
+    <div class="sbox">
+      <span class="si"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></span>
+      <input type="text" id="leadSearch" placeholder="Type to search…" autocomplete="off" />
+    </div>
+    <div id="leadResults"></div>
+    <div class="br"><span></span><button class="btn bp" id="btnLead" disabled>Select Lead →</button></div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="card sc hidden" id="step-1">
+    <div class="ct">What to update?</div>
+    <div class="cs">Choose meeting or call, then select one.</div>
+    <div id="ban1"></div>
+    <div class="tg">
+      <div class="tb" data-type="meeting" onclick="selType('meeting')"><span class="ti">📅</span><span class="tl">Meeting</span><div class="td">Update meeting</div></div>
+      <div class="tb" data-type="call" onclick="selType('call')"><span class="ti">📞</span><span class="tl">Call</span><div class="td">Update call</div></div>
+    </div>
+    <div id="actList"></div>
+    <div class="br"><button class="btn bs" onclick="go(0)">← Back</button><button class="btn bp" id="btnAct" disabled>Continue →</button></div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="card sc hidden" id="step-2">
+    <div class="ct" id="upT">Update Meeting</div>
+    <div class="cs" id="upS">Update activity and lead. A note will be auto-created.</div>
+    <div id="ban2"></div>
+
+    <div id="mF" class="hidden">
+      <div class="slbl">Meeting Details</div>
+      <div class="fg"><label>Minutes of Meeting</label><textarea id="f_mom" placeholder="Enter minutes…"></textarea></div>
+      <div class="fr">
+        <div class="fg"><label>Category <span class="rq">*</span></label><select id="f_cat"></select></div>
+        <div class="fg"><label>Type <span class="rq">*</span></label><select id="f_type"></select></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Meeting Status <span class="rq">*</span></label><select id="f_mstat"></select></div>
+        <div class="fg"><label>Completed Date/Time</label><input type="datetime-local" id="f_cdt" /></div>
+      </div>
+      <div class="fg"><label>Joint Meeting With</label><input type="text" id="f_joint" placeholder="User name" /></div>
+      <hr class="divider" />
+      <div class="slbl">Lead Details</div>
+      <div class="fr">
+        <div class="fg"><label>Lead Status <span class="rq">*</span></label><select id="f_ls_m"></select></div>
+        <div class="fg"><label>Qualified-Lead</label><select id="f_ql_m"></select></div>
+      </div>
+      <div class="fg"><label>Lead Potential</label><select id="f_lp"></select></div>
+      <div class="np" id="mNP">
+        <div class="np-l">📝 Note Preview</div>
+        <div class="np-t" id="mNT">—</div>
+        <div class="np-b" id="mNB">—</div>
+      </div>
+    </div>
+
+    <div id="cF" class="hidden">
+      <div class="slbl">Call Details</div>
+      <div class="fr">
+        <div class="fg"><label>Call Category <span class="rq">*</span></label><select id="f_ccat"></select></div>
+        <div class="fg"><label>Call Result <span class="rq">*</span></label><select id="f_cres"></select></div>
+      </div>
+      <div class="fg"><label>Summary</label><textarea id="f_csum" placeholder="Enter call summary…"></textarea></div>
+      <hr class="divider" />
+      <div class="slbl">Lead Details</div>
+      <div class="fr">
+        <div class="fg"><label>Lead Status <span class="rq">*</span></label><select id="f_ls_c"></select></div>
+        <div class="fg"><label>Qualified Lead</label><select id="f_ql_c"></select></div>
+      </div>
+      <div class="np" id="cNP">
+        <div class="np-l">📝 Note Preview</div>
+        <div class="np-t" id="cNT">—</div>
+        <div class="np-b" id="cNB">—</div>
+      </div>
+    </div>
+
+    <div class="br"><button class="btn bs" onclick="go(1)">← Back</button><button class="btn bp" id="btnUp" disabled>Update & Continue →</button></div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="card sc hidden" id="step-3">
+    <div class="ct">Schedule Follow-up</div>
+    <div class="cs">Create a follow-up call or meeting.</div>
+    <div id="ban3"></div>
+    <div class="tg">
+      <div class="tb" data-ft="call" onclick="selFU('call')"><span class="ti">📞</span><span class="tl">Call</span></div>
+      <div class="tb" data-ft="meeting" onclick="selFU('meeting')"><span class="ti">📅</span><span class="tl">Meeting</span></div>
+    </div>
+    <div id="fuForm" class="hidden">
+      <div class="fg"><label>Subject <span class="rq">*</span></label><input type="text" id="fu_sub" placeholder="e.g. Follow-up on proposal" /></div>
+      <div class="fr">
+        <div class="fg"><label>Date <span class="rq">*</span></label><input type="date" id="fu_date" /></div>
+        <div class="fg"><label>Time <span class="rq">*</span></label><input type="time" id="fu_time" /></div>
+      </div>
+      <div class="fg"><label>Description</label><textarea id="fu_desc" placeholder="Add details…"></textarea></div>
+    </div>
+    <div class="br"><button class="btn bs" onclick="go(2)">← Back</button><button class="btn bp" id="btnFU" disabled>Create & Continue →</button></div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="card sc hidden" id="step-4">
+    <div class="ct">Related Deals</div>
+    <div class="cs">Select a deal to update.</div>
+    <div id="ban4"></div>
+    <div id="dealList"></div>
+    <div id="dealForm" class="hidden">
+      <hr class="divider" />
+      <div class="fr">
+        <div class="fg"><label>Deal Stage <span class="rq">*</span></label><select id="d_stage"></select></div>
+        <div class="fg"><label>Amount</label><input type="number" id="d_amt" placeholder="Deal value" /></div>
+      </div>
+      <div class="fg"><label>Closing Date</label><input type="date" id="d_cdate" /></div>
+      <div class="fg"><label>Notes</label><textarea id="d_notes" placeholder="Update deal notes…"></textarea></div>
+    </div>
+    <div class="br"><button class="btn bs" onclick="go(3)">← Back</button><button class="btn bg" id="btnDeal" disabled>Finish ✓</button></div>
+  </div>
+
+  <!-- DONE -->
+  <div class="card sc hidden" id="step-done">
+    <div class="succ">
+      <div class="succ-i">✓</div>
+      <h2>All Done!</h2>
+      <p>Activity updated, note created, follow-up scheduled, and deal updated.</p>
+      <button class="btn bp" onclick="reset()">Start New Workflow</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://live.zwidgets.com/js-sdk/1.2/ZohoEmbeddedApp.js"></script>
+<script>
+var step=0,lead=null,aType=null,selAct=null,fuType=null,selDeal=null,sTimer=null,hostName='',callOwnerName='';
+var pk={Events:{},Calls:{},Leads:{},Deals:{}};
+
+ZOHO.embeddedApp.on("PageLoad",function(d){
+  console.log("Widget loaded",d);
+  fetchPK();
+  ZOHO.CRM.CONFIG.getCurrentUser().then(function(r){
+    if(r&&r.users&&r.users[0])hostName=r.users[0].full_name||r.users[0].first_name||'';
+  });
+});
+ZOHO.embeddedApp.init();
+
+function fetchPK(){
+  fF("Events",[{a:"Category",s:["f_cat"]},{a:"Meeting_Type",s:["f_type"]},{a:"Meeting_Status",s:["f_mstat"]}]);
+  fF("Calls",[{a:"Category_of_Call",s:["f_ccat"]},{a:"Call_Result",s:["f_cres"]}]);
+  fF("Leads",[{a:"Lead_Status",s:["f_ls_m","f_ls_c"]},{a:"Quality",s:["f_ql_m","f_ql_c"]},{a:"Star_Rating",s:["f_lp"]}]);
+  fF("Deals",[{a:"Stage",s:["d_stage"]}]);
+}
+function fF(mod,defs){
+  ZOHO.CRM.META.getFields({Entity:mod}).then(function(r){
+    var fs=(r&&r.fields)?r.fields:[];
+    var names=defs.map(function(d){return d.a});
+    fs.forEach(function(f){
+      var i=names.indexOf(f.api_name);if(i===-1)return;
+      var vs=(f.pick_list_values||[]).map(function(v){return v.display_value});
+      pk[mod][f.api_name]=vs;
+      defs[i].s.forEach(function(id){pSel(id,vs,f.field_label||f.api_name)});
+    });
+  }).catch(function(e){console.warn("Fields:"+mod,e)});
+}
+function pSel(id,vs,lbl){
+  var s=document.getElementById(id);if(!s)return;
+  s.innerHTML='<option value="">Select '+lbl+'</option>';
+  vs.forEach(function(v){var o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o)});
+}
+
+function upSt(){
+  document.querySelectorAll('.st').forEach(function(e){
+    var s=+e.dataset.step;
+    e.className='st '+(s<step?'done':s===step?'active':'pending');
+    e.querySelector('.st-c').textContent=s<step?'✓':s+1;
+  });
+  document.querySelectorAll('.st-x').forEach(function(e){e.className='st-x'+(+e.dataset.conn<step?' done':'')});
+  document.querySelectorAll('.sc').forEach(function(e){e.classList.add('hidden')});
+  document.getElementById(step>4?'step-done':'step-'+step).classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function go(n){step=n;upSt();if(lead&&n>=1)bans();if(n===4&&lead)fetchDeals()}
+
+function ln(){return lead.Full_Name||((lead.First_Name||'')+' '+(lead.Last_Name||'')).trim()}
+function bans(){
+  var nm=ln(),h='<div class="lb"><div class="la">'+((nm||'?')[0].toUpperCase())+'</div><div class="li2"><div class="n">'+nm+'</div><div class="d">'+(lead.Company||'')+(lead.Email?' · '+lead.Email:'')+'</div></div></div>';
+  ['ban1','ban2','ban3','ban4'].forEach(function(id){document.getElementById(id).innerHTML=h});
+}
+function toast(m,d){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},d||3000)}
+function sv(id,v){var e=document.getElementById(id);if(e)e.value=v}
+
+// STEP 0
+document.getElementById('leadSearch').addEventListener('input',function(){
+  clearTimeout(sTimer);var q=this.value.trim();
+  if(q.length<2){document.getElementById('leadResults').innerHTML='';return}
+  sTimer=setTimeout(function(){searchL(q)},400);
+});
+function searchL(q){
+  var c=document.getElementById('leadResults');
+  c.innerHTML='<div class="loading"><div class="spinner spinner-lg"></div><br/>Searching…</div>';
+  ZOHO.CRM.API.searchRecord({Entity:"Leads",Type:"word",Query:q}).then(function(r){
+    var d=(r&&r.data)?r.data:[];
+    if(!d.length){c.innerHTML='<div class="empty"><div class="ei">🔍</div>No leads found.</div>';return}
+    c.innerHTML=d.slice(0,8).map(function(l){
+      var nm=l.Full_Name||((l.First_Name||'')+' '+(l.Last_Name||'')).trim();
+      return'<div class="li" data-id="'+l.id+'" onclick="pickL(\''+l.id+'\')"><div class="li-l"><div class="li-n">'+nm+'</div><div class="li-m">'+(l.Company||'—')+(l.Email?' · '+l.Email:'')+'</div></div><div class="li-b">'+(l.Lead_Status||'Open')+'</div></div>';
+    }).join('');
+  }).catch(function(){c.innerHTML='<div class="empty"><div class="ei">⚠️</div>Error. Try again.</div>'});
+}
+function pickL(id){
+  document.querySelectorAll('#leadResults .li').forEach(function(e){e.classList.toggle('sel',e.dataset.id===id)});
+  ZOHO.CRM.API.getRecord({Entity:"Leads",RecordID:id}).then(function(r){lead=r.data[0];document.getElementById('btnLead').disabled=false});
+}
+document.getElementById('btnLead').addEventListener('click',function(){if(lead)go(1)});
+
+// STEP 1
+function selType(t){
+  aType=t;selAct=null;document.getElementById('btnAct').disabled=true;
+  document.querySelectorAll('#step-1 .tb').forEach(function(e){e.classList.toggle('active',e.dataset.type===t)});
+  fetchActs(t);
+}
+function fetchActs(t){
+  var c=document.getElementById('actList'),ent=t==='meeting'?'Events':'Calls';
+  c.innerHTML='<div class="loading"><div class="spinner spinner-lg"></div><br/>Loading…</div>';
+  ZOHO.CRM.API.searchRecord({Entity:ent,Type:"criteria",Query:"(Who_Id:equals:"+lead.id+")"}).then(function(r){
+    var items=(r&&r.data)?r.data:[];
+    if(!items.length){c.innerHTML='<div class="empty"><div class="ei">'+(t==='meeting'?'📅':'📞')+'</div>No '+t+'s found.</div>';return}
+    c.innerHTML=items.map(function(it){
+      var title=it.Event_Title||it.Subject||'Untitled',dt=it.Start_DateTime||it.Call_Start_Time||'',ds=dt?new Date(dt).toLocaleString():'No date',badge=it.Meeting_Status||it.Call_Result||it.Status||'—';
+      return'<div class="li" data-id="'+it.id+'" onclick="pickA(\''+it.id+'\',\''+ent+'\')"><div class="li-l"><div class="li-n">'+title+'</div><div class="li-m">'+ds+'</div></div><div class="li-b">'+badge+'</div></div>';
+    }).join('');
+  }).catch(function(){c.innerHTML='<div class="empty"><div class="ei">⚠️</div>Could not load.</div>'});
+}
+function pickA(id,ent){
+  document.querySelectorAll('#actList .li').forEach(function(e){e.classList.toggle('sel',e.dataset.id===id)});
+  ZOHO.CRM.API.getRecord({Entity:ent,RecordID:id}).then(function(r){
+    selAct=r.data[0];selAct._ent=ent;
+    if(ent==='Events'){var h=selAct.Host;if(h&&h.name)hostName=h.name}
+    else{var o=selAct.Owner;if(o&&o.name)callOwnerName=o.name;else callOwnerName=hostName}
+    document.getElementById('btnAct').disabled=false;
+  });
+}
+document.getElementById('btnAct').addEventListener('click',function(){if(selAct){prepForm();go(2)}});
+
+// STEP 2
+function prepForm(){
+  var isM=aType==='meeting';
+  document.getElementById('upT').textContent=isM?'Update Meeting':'Update Call';
+  document.getElementById('upS').textContent='Update the '+aType+' and lead details below.';
+  document.getElementById('mF').classList.toggle('hidden',!isM);
+  document.getElementById('cF').classList.toggle('hidden',isM);
+  if(isM){
+    document.getElementById('f_mom').value=selAct.Minutes_of_the_Meeting||selAct.Description||'';
+    sv('f_cat',selAct.Category||'');sv('f_type',selAct.Meeting_Type||'');sv('f_mstat',selAct.Meeting_Status||'');
+    document.getElementById('f_cdt').value='';document.getElementById('f_joint').value=selAct.Joint_Meeting_With1||'';
+    sv('f_ls_m',lead.Lead_Status||'');sv('f_ql_m',lead.Quality||'');sv('f_lp',lead.Star_Rating||'');
+    upMNP();
+    ['f_mom','f_cat','f_type','f_joint'].forEach(function(id){
+      var e=document.getElementById(id);
+      e.removeEventListener('input',upMNP);e.removeEventListener('change',upMNP);
+      e.addEventListener('input',upMNP);e.addEventListener('change',upMNP);
+    });
+  }else{
+    sv('f_ccat',selAct.Category_of_Call||'');sv('f_cres',selAct.Call_Result||'');
+    document.getElementById('f_csum').value=selAct.Description||'';
+    sv('f_ls_c',lead.Lead_Status||'');sv('f_ql_c',lead.Quality||'');
+    upCNP();
+    ['f_csum','f_ccat','f_cres'].forEach(function(id){
+      var e=document.getElementById(id);
+      e.removeEventListener('input',upCNP);e.removeEventListener('change',upCNP);
+      e.addEventListener('input',upCNP);e.addEventListener('change',upCNP);
+    });
+  }
+  document.getElementById('btnUp').disabled=false;
+}
+function upMNP(){
+  var cat=document.getElementById('f_cat').value||'—',typ=document.getElementById('f_type').value||'—',host=hostName||'—';
+  document.getElementById('mNT').textContent=cat+' - '+typ+' - '+host;
+  document.getElementById('mNB').textContent=document.getElementById('f_mom').value||'(No content)';
+}
+function upCNP(){
+  var cat=document.getElementById('f_ccat').value||'—',res=document.getElementById('f_cres').value||'—',own=callOwnerName||hostName||'—';
+  document.getElementById('cNT').textContent=cat+' - '+res+' - '+own;
+  document.getElementById('cNB').textContent=document.getElementById('f_csum').value||'(No content)';
+}
+
+document.getElementById('btnUp').addEventListener('click',function(){
+  var btn=this;btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Updating…';
+  var isM=aType==='meeting',ent=selAct._ent,aD={},nT='',nB='';
+  if(isM){
+    aD.Minutes_of_the_Meeting=document.getElementById('f_mom').value;
+    aD.Category=document.getElementById('f_cat').value;
+    aD.Meeting_Type=document.getElementById('f_type').value;
+    aD.Meeting_Status=document.getElementById('f_mstat').value;
+    var cdt=document.getElementById('f_cdt').value;if(cdt)aD.Completed_Date_Time=cdt;
+    var jw=document.getElementById('f_joint').value;if(jw)aD.Joint_Meeting_With1=jw;
+    nT=(aD.Category||'—')+' - '+(aD.Meeting_Type||'—')+' - '+(hostName||'—');
+    nB=aD.Minutes_of_the_Meeting||'';
+  }else{
+    aD.Category_of_Call=document.getElementById('f_ccat').value;
+    aD.Call_Result=document.getElementById('f_cres').value;
+    aD.Description=document.getElementById('f_csum').value;
+    nT=(aD.Category_of_Call||'—')+' - '+(aD.Call_Result||'—')+' - '+(callOwnerName||hostName||'—');
+    nB=aD.Description||'';
+  }
+  var lD={};
+  if(isM){
+    lD.Lead_Status=document.getElementById('f_ls_m').value;
+    var q=document.getElementById('f_ql_m').value;if(q)lD.Quality=q;
+    var p=document.getElementById('f_lp').value;if(p)lD.Star_Rating=p;
+  }else{
+    lD.Lead_Status=document.getElementById('f_ls_c').value;
+    var q2=document.getElementById('f_ql_c').value;if(q2)lD.Quality=q2;
+  }
+  var noteD={Note_Title:nT,Note_Content:nB,Parent_Id:lead.id,se_module:"Leads"};
+
+  Promise.all([
+    ZOHO.CRM.API.updateRecord({Entity:ent,RecordID:selAct.id,APIData:aD}),
+    ZOHO.CRM.API.updateRecord({Entity:"Leads",RecordID:lead.id,APIData:lD}),
+    ZOHO.CRM.API.insertRecord({Entity:"Notes",APIData:noteD})
+  ]).then(function(){
+    toast(isM?'Meeting, lead & note updated!':'Call, lead & note updated!');
+    btn.innerHTML='Update & Continue →';btn.disabled=false;go(3);
+  }).catch(function(e){
+    console.error(e);toast('Error. Check console.');
+    btn.innerHTML='Update & Continue →';btn.disabled=false;
+  });
+});
+
+// STEP 3
+function selFU(t){
+  fuType=t;
+  document.querySelectorAll('#step-3 .tb').forEach(function(e){e.classList.toggle('active',e.dataset.ft===t)});
+  document.getElementById('fuForm').classList.remove('hidden');valFU();
+}
+['fu_sub','fu_date','fu_time'].forEach(function(id){document.getElementById(id).addEventListener('input',valFU)});
+function valFU(){
+  document.getElementById('btnFU').disabled=!(fuType&&document.getElementById('fu_sub').value.trim()&&document.getElementById('fu_date').value&&document.getElementById('fu_time').value);
+}
+document.getElementById('btnFU').addEventListener('click',function(){
+  var btn=this;btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Creating…';
+  var d=document.getElementById('fu_date').value,t=document.getElementById('fu_time').value;
+  var startDT=d+'T'+t+':00+05:30';
+  var endD=new Date(d+'T'+t);endD.setHours(endD.getHours()+1);
+  var pad=function(n){return n<10?'0'+n:''+n};
+  var endDT=endD.getFullYear()+'-'+pad(endD.getMonth()+1)+'-'+pad(endD.getDate())+'T'+pad(endD.getHours())+':'+pad(endD.getMinutes())+':00+05:30';
+  var apiD,ent;
+  if(fuType==='call'){ent='Calls';apiD={Subject:document.getElementById('fu_sub').value,Call_Start_Time:startDT,Call_Type:"Outbound",Who_Id:lead.id,Description:document.getElementById('fu_desc').value}}
+  else{ent='Events';apiD={Event_Title:document.getElementById('fu_sub').value,Start_DateTime:startDT,End_DateTime:endDT,Who_Id:lead.id,Description:document.getElementById('fu_desc').value}}
+  ZOHO.CRM.API.insertRecord({Entity:ent,APIData:apiD}).then(function(){
+    toast('Follow-up created!');btn.innerHTML='Create & Continue →';btn.disabled=false;go(4);
+  }).catch(function(){toast('Error.');btn.innerHTML='Create & Continue →';btn.disabled=false});
+});
+
+// STEP 4
+function fetchDeals(){
+  var c=document.getElementById('dealList');
+  c.innerHTML='<div class="loading"><div class="spinner spinner-lg"></div><br/>Loading deals…</div>';
+  document.getElementById('dealForm').classList.add('hidden');document.getElementById('btnDeal').disabled=true;selDeal=null;
+  ZOHO.CRM.API.searchRecord({Entity:"Deals",Type:"criteria",Query:"(Contact_Name:equals:"+ln()+")"}).then(function(r){
+    var deals=(r&&r.data)?r.data:[];
+    if(!deals.length){c.innerHTML='<div class="empty"><div class="ei">💼</div>No deals found.</div>';return}
+    c.innerHTML=deals.map(function(d){
+      return'<div class="li" data-id="'+d.id+'" onclick="pickD(\''+d.id+'\')"><div class="li-l"><div class="li-n">'+(d.Deal_Name||'Untitled')+'</div><div class="li-m">'+(d.Stage||'—')+' · '+(d.Amount?'₹'+Number(d.Amount).toLocaleString():'No amt')+'</div></div><div class="li-b">'+(d.Stage||'—')+'</div></div>';
+    }).join('');
+  }).catch(function(){c.innerHTML='<div class="empty"><div class="ei">⚠️</div>Could not load.</div>'});
+}
+function pickD(id){
+  document.querySelectorAll('#dealList .li').forEach(function(e){e.classList.toggle('sel',e.dataset.id===id)});
+  ZOHO.CRM.API.getRecord({Entity:"Deals",RecordID:id}).then(function(r){
+    selDeal=r.data[0];
+    sv('d_stage',selDeal.Stage||'');document.getElementById('d_amt').value=selDeal.Amount||'';
+    document.getElementById('d_cdate').value=selDeal.Closing_Date||'';document.getElementById('d_notes').value=selDeal.Description||'';
+    document.getElementById('dealForm').classList.remove('hidden');document.getElementById('btnDeal').disabled=false;
+  });
+}
+document.getElementById('btnDeal').addEventListener('click',function(){
+  if(!selDeal)return;var btn=this;btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Updating…';
+  ZOHO.CRM.API.updateRecord({Entity:"Deals",RecordID:selDeal.id,APIData:{
+    Stage:document.getElementById('d_stage').value,Amount:document.getElementById('d_amt').value,
+    Closing_Date:document.getElementById('d_cdate').value,Description:document.getElementById('d_notes').value
+  }}).then(function(){toast('Deal updated!');btn.innerHTML='Finish ✓';btn.disabled=false;step=5;upSt()})
+  .catch(function(){toast('Error.');btn.innerHTML='Finish ✓';btn.disabled=false});
+});
+
+function reset(){
+  step=0;lead=null;aType=null;selAct=null;fuType=null;selDeal=null;
+  document.getElementById('leadSearch').value='';document.getElementById('leadResults').innerHTML='';
+  document.getElementById('btnLead').disabled=true;document.getElementById('actList').innerHTML='';
+  document.getElementById('btnAct').disabled=true;
+  document.getElementById('mF').classList.add('hidden');document.getElementById('cF').classList.add('hidden');
+  document.getElementById('fuForm').classList.add('hidden');document.getElementById('dealForm').classList.add('hidden');
+  document.querySelectorAll('.tb').forEach(function(e){e.classList.remove('active')});
+  upSt();
+}
+</script>
+</body>
+</html>
