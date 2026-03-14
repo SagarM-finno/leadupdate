@@ -18,15 +18,18 @@
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
-
     .wrap{max-width:860px;margin:0 auto;padding:24px 20px 80px}
-
-    /* Header */
     .hdr{text-align:center;margin-bottom:24px}
     .hdr h1{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:22px;letter-spacing:-0.5px}
     .hdr p{color:var(--t2);font-size:13px;margin-top:4px}
 
-    /* Stepper */
+    /* SDK status banner */
+    .sdk-status{text-align:center;padding:12px;margin-bottom:16px;border-radius:var(--rs);font-size:13px;font-weight:600;display:none}
+    .sdk-status.loading{display:block;background:#fff3cd;color:#856404;border:1px solid #ffc107}
+    .sdk-status.ready{display:block;background:var(--ol);color:var(--ok);border:1px solid var(--ok);animation:fadeOut 2s forwards 1.5s}
+    .sdk-status.error{display:block;background:#fdecea;color:var(--er);border:1px solid var(--er)}
+    @keyframes fadeOut{to{opacity:0;height:0;padding:0;margin:0;overflow:hidden}}
+
     .stepper{display:flex;justify-content:center;align-items:center;margin-bottom:28px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:4px 0}
     .st{display:flex;align-items:center;gap:6px;flex-shrink:0}
     .st-c{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;transition:all var(--tr);flex-shrink:0}
@@ -38,13 +41,11 @@
     .st-x{width:28px;height:2px;background:var(--bd);margin:0 6px;flex-shrink:0;transition:background var(--tr)}
     .st-x.done{background:var(--ok)}
 
-    /* Card */
     .card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rl);padding:24px;box-shadow:0 1px 3px rgba(26,22,18,0.06);animation:fu .3s ease-out}
     @keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
     .ct{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:18px;margin-bottom:3px;letter-spacing:-0.3px}
     .cs{color:var(--t2);font-size:13px;margin-bottom:20px}
 
-    /* Form */
     .fg{margin-bottom:16px}
     .fg label{display:block;font-size:12px;font-weight:600;color:var(--t2);margin-bottom:5px;letter-spacing:0.15px}
     .fg label .rq{color:var(--er);margin-left:2px}
@@ -62,12 +63,10 @@
     .slbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--t3);margin-bottom:12px;display:flex;align-items:center;gap:8px}
     .slbl::after{content:'';flex:1;height:1px;background:var(--bd)}
 
-    /* Search */
     .sbox{position:relative;margin-bottom:18px}
     .sbox input{padding-left:38px;height:46px;font-size:15px;border-radius:var(--r)}
     .sbox .si{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--t3);pointer-events:none}
 
-    /* List */
     .li{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1.5px solid var(--bd);border-radius:var(--r);margin-bottom:8px;cursor:pointer;transition:all var(--tr);background:var(--sf);-webkit-tap-highlight-color:transparent}
     .li:hover,.li:active{border-color:var(--bf);background:var(--sh)}
     .li.sel{border-color:var(--ac);background:var(--al)}
@@ -76,7 +75,6 @@
     .li-m{font-size:12px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .li-b{font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;background:var(--sa);color:var(--t2);border:1px solid var(--bd);white-space:nowrap;flex-shrink:0;margin-left:10px}
 
-    /* Toggle */
     .tg{display:flex;gap:10px;margin-bottom:20px}
     .tb{flex:1;padding:14px 10px;border:2px solid var(--bd);border-radius:var(--r);background:var(--sf);cursor:pointer;text-align:center;transition:all var(--tr);font-family:'DM Sans',sans-serif;-webkit-tap-highlight-color:transparent}
     .tb:hover,.tb:active{border-color:var(--bf)}
@@ -85,14 +83,12 @@
     .tb .tl{font-size:13.5px;font-weight:600}
     .tb .td{font-size:11px;color:var(--t2);margin-top:2px}
 
-    /* Lead banner */
     .lb{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--al);border:1.5px solid var(--ac);border-radius:var(--rs);margin-bottom:20px}
     .la{width:34px;height:34px;border-radius:50%;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
     .li2{flex:1;min-width:0}
     .li2 .n{font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .li2 .d{font-size:11px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-    /* Buttons */
     .br{display:flex;justify-content:space-between;align-items:center;margin-top:22px;padding-top:16px;border-top:1px solid var(--bd);gap:10px}
     .btn{padding:10px 20px;border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:600;border:none;cursor:pointer;transition:all var(--tr);display:inline-flex;align-items:center;gap:6px;-webkit-tap-highlight-color:transparent;touch-action:manipulation;white-space:nowrap}
     .bp{background:var(--ac);color:#fff}.bp:hover{background:var(--ad)}.bp:disabled{background:var(--bd);color:var(--t3);cursor:not-allowed}
@@ -106,23 +102,25 @@
     @keyframes sp{to{transform:rotate(360deg)}}
     .empty{text-align:center;padding:32px 16px;color:var(--t3);font-size:13px}
     .empty .ei{font-size:28px;margin-bottom:6px;opacity:0.5}
-
     .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--t1);color:#fff;padding:10px 20px;border-radius:var(--r);font-size:13px;font-weight:500;box-shadow:0 8px 32px rgba(26,22,18,0.15);transition:transform .3s ease;z-index:100;max-width:90vw;text-align:center}
     .toast.show{transform:translateX(-50%) translateY(0)}
-
-    /* Note preview */
     .np{background:var(--sa);border:1.5px dashed var(--bd);border-radius:var(--rs);padding:12px 14px;margin-top:12px}
     .np .np-l{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:var(--t3);margin-bottom:5px}
     .np .np-t{font-weight:700;font-size:13.5px;margin-bottom:3px;color:var(--t1);word-break:break-word}
     .np .np-b{font-size:12.5px;color:var(--t2);white-space:pre-wrap;line-height:1.5;max-height:70px;overflow-y:auto;word-break:break-word}
-
-    /* Success */
     .succ{text-align:center;padding:40px 16px;animation:fu .35s ease-out}
     .succ-i{width:64px;height:64px;border-radius:50%;background:var(--ol);color:var(--ok);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 16px}
     .succ h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:700;margin-bottom:6px}
     .succ p{color:var(--t2);font-size:13px;max-width:380px;margin:0 auto 22px;line-height:1.6}
 
-    /* ═══ MOBILE ═══ */
+    /* Debug log */
+    .debug-log{position:fixed;bottom:0;left:0;right:0;max-height:120px;overflow-y:auto;background:#1a1612;color:#e0d8ce;font-family:monospace;font-size:11px;padding:8px 12px;z-index:200;display:none;line-height:1.4}
+    .debug-log.show{display:block}
+    .debug-log .err{color:#ff6b6b}
+    .debug-log .ok{color:#69db7c}
+    .debug-log .warn{color:#ffd43b}
+    .debug-toggle{position:fixed;bottom:8px;right:8px;width:32px;height:32px;border-radius:50%;background:var(--t1);color:#fff;border:none;font-size:14px;cursor:pointer;z-index:201;display:flex;align-items:center;justify-content:center;opacity:0.5}
+
     @media(max-width:768px){
       .wrap{padding:16px 12px 70px}
       .hdr h1{font-size:19px}
@@ -143,15 +141,12 @@
       .lb{padding:8px 12px;gap:8px}
       .la{width:30px;height:30px;font-size:12px}
     }
-
     @media(max-width:380px){
       .wrap{padding:12px 8px 60px}
       .card{padding:14px 12px}
       .hdr h1{font-size:17px}
       .btn{padding:9px 12px;font-size:12.5px}
     }
-
-    /* Safe area for notched phones */
     @supports(padding:max(0px)){
       .wrap{padding-bottom:max(80px,env(safe-area-inset-bottom))}
       .toast{bottom:max(20px,env(safe-area-inset-bottom))}
@@ -164,6 +159,9 @@
     <h1>Lead Follow-up Workflow</h1>
     <p>Search → Update → Follow-up → Deal</p>
   </div>
+
+  <!-- SDK Status -->
+  <div class="sdk-status loading" id="sdkStatus">⏳ Connecting to Zoho CRM…</div>
 
   <div class="stepper" id="stepper">
     <div class="st active" data-step="0"><div class="st-c">1</div><span class="st-l">Lead</span></div>
@@ -207,7 +205,6 @@
     <div class="ct" id="upT">Update Meeting</div>
     <div class="cs" id="upS">Update activity and lead. A note will be auto-created.</div>
     <div id="ban2"></div>
-
     <div id="mF" class="hidden">
       <div class="slbl">Meeting Details</div>
       <div class="fg"><label>Minutes of Meeting</label><textarea id="f_mom" placeholder="Enter minutes…"></textarea></div>
@@ -227,13 +224,8 @@
         <div class="fg"><label>Qualified-Lead</label><select id="f_ql_m"></select></div>
       </div>
       <div class="fg"><label>Lead Potential</label><select id="f_lp"></select></div>
-      <div class="np" id="mNP">
-        <div class="np-l">📝 Note Preview</div>
-        <div class="np-t" id="mNT">—</div>
-        <div class="np-b" id="mNB">—</div>
-      </div>
+      <div class="np" id="mNP"><div class="np-l">📝 Note Preview</div><div class="np-t" id="mNT">—</div><div class="np-b" id="mNB">—</div></div>
     </div>
-
     <div id="cF" class="hidden">
       <div class="slbl">Call Details</div>
       <div class="fr">
@@ -247,13 +239,8 @@
         <div class="fg"><label>Lead Status <span class="rq">*</span></label><select id="f_ls_c"></select></div>
         <div class="fg"><label>Qualified Lead</label><select id="f_ql_c"></select></div>
       </div>
-      <div class="np" id="cNP">
-        <div class="np-l">📝 Note Preview</div>
-        <div class="np-t" id="cNT">—</div>
-        <div class="np-b" id="cNB">—</div>
-      </div>
+      <div class="np" id="cNP"><div class="np-l">📝 Note Preview</div><div class="np-t" id="cNT">—</div><div class="np-b" id="cNB">—</div></div>
     </div>
-
     <div class="br"><button class="btn bs" onclick="go(1)">← Back</button><button class="btn bp" id="btnUp" disabled>Update & Continue →</button></div>
   </div>
 
@@ -308,267 +295,350 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- Debug log toggle -->
+<button class="debug-toggle" onclick="document.getElementById('dbg').classList.toggle('show')">🐛</button>
+<div class="debug-log" id="dbg"></div>
+
 <script src="https://live.zwidgets.com/js-sdk/1.2/ZohoEmbeddedApp.js"></script>
 <script>
-var step=0,lead=null,aType=null,selAct=null,fuType=null,selDeal=null,sTimer=null,hostName='',callOwnerName='';
-var pk={Events:{},Calls:{},Leads:{},Deals:{}};
+// ═══ DEBUG LOGGER ═══
+function log(msg, type) {
+  var d = document.getElementById('dbg');
+  var cls = type === 'err' ? 'err' : type === 'ok' ? 'ok' : type === 'warn' ? 'warn' : '';
+  d.innerHTML += '<div class="' + cls + '">[' + new Date().toLocaleTimeString() + '] ' + msg + '</div>';
+  d.scrollTop = d.scrollHeight;
+  if (type === 'err') console.error(msg);
+  else console.log(msg);
+}
 
-ZOHO.embeddedApp.on("PageLoad",function(d){
-  console.log("Widget loaded",d);
+// ═══ STATE ═══
+var step = 0, lead = null, aType = null, selAct = null, fuType = null, selDeal = null, sTimer = null;
+var hostName = '', callOwnerName = '';
+var sdkReady = false;
+var pk = { Events: {}, Calls: {}, Leads: {}, Deals: {} };
+
+// ═══ SDK INIT ═══
+var sdkEl = document.getElementById('sdkStatus');
+
+log('Initializing Zoho SDK…');
+
+ZOHO.embeddedApp.on("PageLoad", function(data) {
+  sdkReady = true;
+  log('✅ SDK PageLoad fired. Data: ' + JSON.stringify(data), 'ok');
+
+  sdkEl.className = 'sdk-status ready';
+  sdkEl.textContent = '✅ Connected to Zoho CRM';
+
+  // Fetch picklists
   fetchPK();
-  ZOHO.CRM.CONFIG.getCurrentUser().then(function(r){
-    if(r&&r.users&&r.users[0])hostName=r.users[0].full_name||r.users[0].first_name||'';
+
+  // Get current user
+  ZOHO.CRM.CONFIG.getCurrentUser().then(function(r) {
+    if (r && r.users && r.users[0]) {
+      hostName = r.users[0].full_name || r.users[0].first_name || '';
+      log('Current user: ' + hostName, 'ok');
+    }
+  }).catch(function(e) {
+    log('getCurrentUser error: ' + JSON.stringify(e), 'warn');
   });
 });
-ZOHO.embeddedApp.init();
 
-function fetchPK(){
-  fF("Events",[{a:"Category",s:["f_cat"]},{a:"Meeting_Type",s:["f_type"]},{a:"Meeting_Status",s:["f_mstat"]}]);
-  fF("Calls",[{a:"Category_of_Call",s:["f_ccat"]},{a:"Call_Result",s:["f_cres"]}]);
-  fF("Leads",[{a:"Lead_Status",s:["f_ls_m","f_ls_c"]},{a:"Quality",s:["f_ql_m","f_ql_c"]},{a:"Star_Rating",s:["f_lp"]}]);
-  fF("Deals",[{a:"Stage",s:["d_stage"]}]);
+ZOHO.embeddedApp.init().then(function() {
+  log('embeddedApp.init() resolved', 'ok');
+}).catch(function(e) {
+  log('embeddedApp.init() FAILED: ' + JSON.stringify(e), 'err');
+  sdkEl.className = 'sdk-status error';
+  sdkEl.textContent = '❌ Failed to connect to Zoho CRM. Make sure this widget is loaded inside Zoho.';
+});
+
+// Timeout check
+setTimeout(function() {
+  if (!sdkReady) {
+    log('⚠️ SDK not ready after 5s. PageLoad may not have fired.', 'warn');
+    sdkEl.className = 'sdk-status error';
+    sdkEl.textContent = '⚠️ Zoho CRM connection timeout. Try refreshing.';
+  }
+}, 5000);
+
+// ═══ PICKLISTS ═══
+function fetchPK() {
+  log('Fetching picklists…');
+  fF("Events", [{ a: "Category", s: ["f_cat"] }, { a: "Meeting_Type", s: ["f_type"] }, { a: "Meeting_Status", s: ["f_mstat"] }]);
+  fF("Calls", [{ a: "Category_of_Call", s: ["f_ccat"] }, { a: "Call_Result", s: ["f_cres"] }]);
+  fF("Leads", [{ a: "Lead_Status", s: ["f_ls_m", "f_ls_c"] }, { a: "Quality", s: ["f_ql_m", "f_ql_c"] }, { a: "Star_Rating", s: ["f_lp"] }]);
+  fF("Deals", [{ a: "Stage", s: ["d_stage"] }]);
 }
-function fF(mod,defs){
-  ZOHO.CRM.META.getFields({Entity:mod}).then(function(r){
-    var fs=(r&&r.fields)?r.fields:[];
-    var names=defs.map(function(d){return d.a});
-    fs.forEach(function(f){
-      var i=names.indexOf(f.api_name);if(i===-1)return;
-      var vs=(f.pick_list_values||[]).map(function(v){return v.display_value});
-      pk[mod][f.api_name]=vs;
-      defs[i].s.forEach(function(id){pSel(id,vs,f.field_label||f.api_name)});
+function fF(mod, defs) {
+  ZOHO.CRM.META.getFields({ Entity: mod }).then(function(r) {
+    var fs = (r && r.fields) ? r.fields : [];
+    log('Got ' + fs.length + ' fields for ' + mod, 'ok');
+    var names = defs.map(function(d) { return d.a });
+    fs.forEach(function(f) {
+      var i = names.indexOf(f.api_name); if (i === -1) return;
+      var vs = (f.pick_list_values || []).map(function(v) { return v.display_value });
+      pk[mod][f.api_name] = vs;
+      log(mod + '.' + f.api_name + ': ' + vs.length + ' values');
+      defs[i].s.forEach(function(id) { pSel(id, vs, f.field_label || f.api_name) });
     });
-  }).catch(function(e){console.warn("Fields:"+mod,e)});
+  }).catch(function(e) { log('getFields(' + mod + ') error: ' + JSON.stringify(e), 'err') });
 }
-function pSel(id,vs,lbl){
-  var s=document.getElementById(id);if(!s)return;
-  s.innerHTML='<option value="">Select '+lbl+'</option>';
-  vs.forEach(function(v){var o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o)});
+function pSel(id, vs, lbl) {
+  var s = document.getElementById(id); if (!s) return;
+  s.innerHTML = '<option value="">Select ' + lbl + '</option>';
+  vs.forEach(function(v) { var o = document.createElement('option'); o.value = v; o.textContent = v; s.appendChild(o) });
 }
 
-function upSt(){
-  document.querySelectorAll('.st').forEach(function(e){
-    var s=+e.dataset.step;
-    e.className='st '+(s<step?'done':s===step?'active':'pending');
-    e.querySelector('.st-c').textContent=s<step?'✓':s+1;
+// ═══ STEPPER ═══
+function upSt() {
+  document.querySelectorAll('.st').forEach(function(e) {
+    var s = +e.dataset.step;
+    e.className = 'st ' + (s < step ? 'done' : s === step ? 'active' : 'pending');
+    e.querySelector('.st-c').textContent = s < step ? '✓' : s + 1;
   });
-  document.querySelectorAll('.st-x').forEach(function(e){e.className='st-x'+(+e.dataset.conn<step?' done':'')});
-  document.querySelectorAll('.sc').forEach(function(e){e.classList.add('hidden')});
-  document.getElementById(step>4?'step-done':'step-'+step).classList.remove('hidden');
-  window.scrollTo({top:0,behavior:'smooth'});
+  document.querySelectorAll('.st-x').forEach(function(e) { e.className = 'st-x' + (+e.dataset.conn < step ? ' done' : '') });
+  document.querySelectorAll('.sc').forEach(function(e) { e.classList.add('hidden') });
+  document.getElementById(step > 4 ? 'step-done' : 'step-' + step).classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-function go(n){step=n;upSt();if(lead&&n>=1)bans();if(n===4&&lead)fetchDeals()}
+function go(n) { step = n; upSt(); if (lead && n >= 1) bans(); if (n === 4 && lead) fetchDeals() }
 
-function ln(){return lead.Full_Name||((lead.First_Name||'')+' '+(lead.Last_Name||'')).trim()}
-function bans(){
-  var nm=ln(),h='<div class="lb"><div class="la">'+((nm||'?')[0].toUpperCase())+'</div><div class="li2"><div class="n">'+nm+'</div><div class="d">'+(lead.Company||'')+(lead.Email?' · '+lead.Email:'')+'</div></div></div>';
-  ['ban1','ban2','ban3','ban4'].forEach(function(id){document.getElementById(id).innerHTML=h});
+function ln() { return lead.Full_Name || ((lead.First_Name || '') + ' ' + (lead.Last_Name || '')).trim() }
+function bans() {
+  var nm = ln(), h = '<div class="lb"><div class="la">' + ((nm || '?')[0].toUpperCase()) + '</div><div class="li2"><div class="n">' + nm + '</div><div class="d">' + (lead.Company || '') + (lead.Email ? ' · ' + lead.Email : '') + '</div></div></div>';
+  ['ban1', 'ban2', 'ban3', 'ban4'].forEach(function(id) { document.getElementById(id).innerHTML = h });
 }
-function toast(m,d){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},d||3000)}
-function sv(id,v){var e=document.getElementById(id);if(e)e.value=v}
+function toast(m, d) { var t = document.getElementById('toast'); t.textContent = m; t.classList.add('show'); setTimeout(function() { t.classList.remove('show') }, d || 3000) }
+function sv(id, v) { var e = document.getElementById(id); if (e) e.value = v }
 
-// STEP 0
-document.getElementById('leadSearch').addEventListener('input',function(){
-  clearTimeout(sTimer);var q=this.value.trim();
-  if(q.length<2){document.getElementById('leadResults').innerHTML='';return}
-  sTimer=setTimeout(function(){searchL(q)},400);
+// ═══ STEP 0: SEARCH ═══
+document.getElementById('leadSearch').addEventListener('input', function() {
+  clearTimeout(sTimer); var q = this.value.trim();
+  if (q.length < 2) { document.getElementById('leadResults').innerHTML = ''; return }
+  sTimer = setTimeout(function() { searchL(q) }, 500);
 });
-function searchL(q){
-  var c=document.getElementById('leadResults');
-  c.innerHTML='<div class="loading"><div class="spinner spinner-lg"></div><br/>Searching…</div>';
-  ZOHO.CRM.API.searchRecord({Entity:"Leads",Type:"word",Query:q}).then(function(r){
-    var d=(r&&r.data)?r.data:[];
-    if(!d.length){c.innerHTML='<div class="empty"><div class="ei">🔍</div>No leads found.</div>';return}
-    c.innerHTML=d.slice(0,8).map(function(l){
-      var nm=l.Full_Name||((l.First_Name||'')+' '+(l.Last_Name||'')).trim();
-      return'<div class="li" data-id="'+l.id+'" onclick="pickL(\''+l.id+'\')"><div class="li-l"><div class="li-n">'+nm+'</div><div class="li-m">'+(l.Company||'—')+(l.Email?' · '+l.Email:'')+'</div></div><div class="li-b">'+(l.Lead_Status||'Open')+'</div></div>';
-    }).join('');
-  }).catch(function(){c.innerHTML='<div class="empty"><div class="ei">⚠️</div>Error. Try again.</div>'});
-}
-function pickL(id){
-  document.querySelectorAll('#leadResults .li').forEach(function(e){e.classList.toggle('sel',e.dataset.id===id)});
-  ZOHO.CRM.API.getRecord({Entity:"Leads",RecordID:id}).then(function(r){lead=r.data[0];document.getElementById('btnLead').disabled=false});
-}
-document.getElementById('btnLead').addEventListener('click',function(){if(lead)go(1)});
 
-// STEP 1
-function selType(t){
-  aType=t;selAct=null;document.getElementById('btnAct').disabled=true;
-  document.querySelectorAll('#step-1 .tb').forEach(function(e){e.classList.toggle('active',e.dataset.type===t)});
+function searchL(q) {
+  if (!sdkReady) {
+    log('Search attempted but SDK not ready!', 'err');
+    document.getElementById('leadResults').innerHTML = '<div class="empty"><div class="ei">⚠️</div>Zoho CRM not connected yet. Please wait…</div>';
+    return;
+  }
+  var c = document.getElementById('leadResults');
+  c.innerHTML = '<div class="loading"><div class="spinner spinner-lg"></div><br/>Searching for "' + q + '"…</div>';
+  log('Searching leads: "' + q + '"');
+
+  ZOHO.CRM.API.searchRecord({ Entity: "Leads", Type: "word", Query: q })
+    .then(function(r) {
+      log('Search response: ' + JSON.stringify(r).substring(0, 200), 'ok');
+      var d = (r && r.data) ? r.data : [];
+      if (!d.length) {
+        c.innerHTML = '<div class="empty"><div class="ei">🔍</div>No leads found for "' + q + '"</div>';
+        return;
+      }
+      log('Found ' + d.length + ' leads', 'ok');
+      c.innerHTML = d.slice(0, 8).map(function(l) {
+        var nm = l.Full_Name || ((l.First_Name || '') + ' ' + (l.Last_Name || '')).trim();
+        return '<div class="li" data-id="' + l.id + '" onclick="pickL(\'' + l.id + '\')"><div class="li-l"><div class="li-n">' + nm + '</div><div class="li-m">' + (l.Company || '—') + (l.Email ? ' · ' + l.Email : '') + '</div></div><div class="li-b">' + (l.Lead_Status || 'Open') + '</div></div>';
+      }).join('');
+    })
+    .catch(function(e) {
+      log('Search ERROR: ' + JSON.stringify(e), 'err');
+      c.innerHTML = '<div class="empty"><div class="ei">⚠️</div>Search failed. Check debug log (🐛).</div>';
+    });
+}
+
+function pickL(id) {
+  document.querySelectorAll('#leadResults .li').forEach(function(e) { e.classList.toggle('sel', e.dataset.id === id) });
+  log('Fetching lead record: ' + id);
+  ZOHO.CRM.API.getRecord({ Entity: "Leads", RecordID: id })
+    .then(function(r) {
+      lead = r.data[0];
+      log('Lead loaded: ' + ln(), 'ok');
+      document.getElementById('btnLead').disabled = false;
+    })
+    .catch(function(e) {
+      log('getRecord lead error: ' + JSON.stringify(e), 'err');
+    });
+}
+document.getElementById('btnLead').addEventListener('click', function() { if (lead) go(1) });
+
+// ═══ STEP 1 ═══
+function selType(t) {
+  aType = t; selAct = null; document.getElementById('btnAct').disabled = true;
+  document.querySelectorAll('#step-1 .tb').forEach(function(e) { e.classList.toggle('active', e.dataset.type === t) });
   fetchActs(t);
 }
-function fetchActs(t){
-  var c=document.getElementById('actList'),ent=t==='meeting'?'Events':'Calls';
-  c.innerHTML='<div class="loading"><div class="spinner spinner-lg"></div><br/>Loading…</div>';
-  ZOHO.CRM.API.searchRecord({Entity:ent,Type:"criteria",Query:"(Who_Id:equals:"+lead.id+")"}).then(function(r){
-    var items=(r&&r.data)?r.data:[];
-    if(!items.length){c.innerHTML='<div class="empty"><div class="ei">'+(t==='meeting'?'📅':'📞')+'</div>No '+t+'s found.</div>';return}
-    c.innerHTML=items.map(function(it){
-      var title=it.Event_Title||it.Subject||'Untitled',dt=it.Start_DateTime||it.Call_Start_Time||'',ds=dt?new Date(dt).toLocaleString():'No date',badge=it.Meeting_Status||it.Call_Result||it.Status||'—';
-      return'<div class="li" data-id="'+it.id+'" onclick="pickA(\''+it.id+'\',\''+ent+'\')"><div class="li-l"><div class="li-n">'+title+'</div><div class="li-m">'+ds+'</div></div><div class="li-b">'+badge+'</div></div>';
-    }).join('');
-  }).catch(function(){c.innerHTML='<div class="empty"><div class="ei">⚠️</div>Could not load.</div>'});
+function fetchActs(t) {
+  var c = document.getElementById('actList'), ent = t === 'meeting' ? 'Events' : 'Calls';
+  c.innerHTML = '<div class="loading"><div class="spinner spinner-lg"></div><br/>Loading…</div>';
+  log('Fetching ' + ent + ' for lead ' + lead.id);
+  ZOHO.CRM.API.searchRecord({ Entity: ent, Type: "criteria", Query: "(Who_Id:equals:" + lead.id + ")" })
+    .then(function(r) {
+      var items = (r && r.data) ? r.data : [];
+      log('Found ' + items.length + ' ' + ent, 'ok');
+      if (!items.length) { c.innerHTML = '<div class="empty"><div class="ei">' + (t === 'meeting' ? '📅' : '📞') + '</div>No ' + t + 's found.</div>'; return }
+      c.innerHTML = items.map(function(it) {
+        var title = it.Event_Title || it.Subject || 'Untitled', dt = it.Start_DateTime || it.Call_Start_Time || '', ds = dt ? new Date(dt).toLocaleString() : 'No date', badge = it.Meeting_Status || it.Call_Result || it.Status || '—';
+        return '<div class="li" data-id="' + it.id + '" onclick="pickA(\'' + it.id + '\',\'' + ent + '\')"><div class="li-l"><div class="li-n">' + title + '</div><div class="li-m">' + ds + '</div></div><div class="li-b">' + badge + '</div></div>';
+      }).join('');
+    })
+    .catch(function(e) { log('fetchActs error: ' + JSON.stringify(e), 'err'); c.innerHTML = '<div class="empty"><div class="ei">⚠️</div>Could not load.</div>' });
 }
-function pickA(id,ent){
-  document.querySelectorAll('#actList .li').forEach(function(e){e.classList.toggle('sel',e.dataset.id===id)});
-  ZOHO.CRM.API.getRecord({Entity:ent,RecordID:id}).then(function(r){
-    selAct=r.data[0];selAct._ent=ent;
-    if(ent==='Events'){var h=selAct.Host;if(h&&h.name)hostName=h.name}
-    else{var o=selAct.Owner;if(o&&o.name)callOwnerName=o.name;else callOwnerName=hostName}
-    document.getElementById('btnAct').disabled=false;
-  });
+function pickA(id, ent) {
+  document.querySelectorAll('#actList .li').forEach(function(e) { e.classList.toggle('sel', e.dataset.id === id) });
+  ZOHO.CRM.API.getRecord({ Entity: ent, RecordID: id }).then(function(r) {
+    selAct = r.data[0]; selAct._ent = ent;
+    if (ent === 'Events') { var h = selAct.Host; if (h && h.name) hostName = h.name }
+    else { var o = selAct.Owner; if (o && o.name) callOwnerName = o.name; else callOwnerName = hostName }
+    document.getElementById('btnAct').disabled = false;
+    log('Selected activity: ' + (selAct.Event_Title || selAct.Subject || id), 'ok');
+  }).catch(function(e) { log('pickA error: ' + JSON.stringify(e), 'err') });
 }
-document.getElementById('btnAct').addEventListener('click',function(){if(selAct){prepForm();go(2)}});
+document.getElementById('btnAct').addEventListener('click', function() { if (selAct) { prepForm(); go(2) } });
 
-// STEP 2
-function prepForm(){
-  var isM=aType==='meeting';
-  document.getElementById('upT').textContent=isM?'Update Meeting':'Update Call';
-  document.getElementById('upS').textContent='Update the '+aType+' and lead details below.';
-  document.getElementById('mF').classList.toggle('hidden',!isM);
-  document.getElementById('cF').classList.toggle('hidden',isM);
-  if(isM){
-    document.getElementById('f_mom').value=selAct.Minutes_of_the_Meeting||selAct.Description||'';
-    sv('f_cat',selAct.Category||'');sv('f_type',selAct.Meeting_Type||'');sv('f_mstat',selAct.Meeting_Status||'');
-    document.getElementById('f_cdt').value='';document.getElementById('f_joint').value=selAct.Joint_Meeting_With1||'';
-    sv('f_ls_m',lead.Lead_Status||'');sv('f_ql_m',lead.Quality||'');sv('f_lp',lead.Star_Rating||'');
+// ═══ STEP 2 ═══
+function prepForm() {
+  var isM = aType === 'meeting';
+  document.getElementById('upT').textContent = isM ? 'Update Meeting' : 'Update Call';
+  document.getElementById('upS').textContent = 'Update the ' + aType + ' and lead details below.';
+  document.getElementById('mF').classList.toggle('hidden', !isM);
+  document.getElementById('cF').classList.toggle('hidden', isM);
+  if (isM) {
+    document.getElementById('f_mom').value = selAct.Minutes_of_the_Meeting || selAct.Description || '';
+    sv('f_cat', selAct.Category || ''); sv('f_type', selAct.Meeting_Type || ''); sv('f_mstat', selAct.Meeting_Status || '');
+    document.getElementById('f_cdt').value = ''; document.getElementById('f_joint').value = selAct.Joint_Meeting_With1 || '';
+    sv('f_ls_m', lead.Lead_Status || ''); sv('f_ql_m', lead.Quality || ''); sv('f_lp', lead.Star_Rating || '');
     upMNP();
-    ['f_mom','f_cat','f_type','f_joint'].forEach(function(id){
-      var e=document.getElementById(id);
-      e.removeEventListener('input',upMNP);e.removeEventListener('change',upMNP);
-      e.addEventListener('input',upMNP);e.addEventListener('change',upMNP);
+    ['f_mom', 'f_cat', 'f_type', 'f_joint'].forEach(function(id) {
+      var e = document.getElementById(id); e.removeEventListener('input', upMNP); e.removeEventListener('change', upMNP);
+      e.addEventListener('input', upMNP); e.addEventListener('change', upMNP);
     });
-  }else{
-    sv('f_ccat',selAct.Category_of_Call||'');sv('f_cres',selAct.Call_Result||'');
-    document.getElementById('f_csum').value=selAct.Description||'';
-    sv('f_ls_c',lead.Lead_Status||'');sv('f_ql_c',lead.Quality||'');
+  } else {
+    sv('f_ccat', selAct.Category_of_Call || ''); sv('f_cres', selAct.Call_Result || '');
+    document.getElementById('f_csum').value = selAct.Description || '';
+    sv('f_ls_c', lead.Lead_Status || ''); sv('f_ql_c', lead.Quality || '');
     upCNP();
-    ['f_csum','f_ccat','f_cres'].forEach(function(id){
-      var e=document.getElementById(id);
-      e.removeEventListener('input',upCNP);e.removeEventListener('change',upCNP);
-      e.addEventListener('input',upCNP);e.addEventListener('change',upCNP);
+    ['f_csum', 'f_ccat', 'f_cres'].forEach(function(id) {
+      var e = document.getElementById(id); e.removeEventListener('input', upCNP); e.removeEventListener('change', upCNP);
+      e.addEventListener('input', upCNP); e.addEventListener('change', upCNP);
     });
   }
-  document.getElementById('btnUp').disabled=false;
+  document.getElementById('btnUp').disabled = false;
 }
-function upMNP(){
-  var cat=document.getElementById('f_cat').value||'—',typ=document.getElementById('f_type').value||'—',host=hostName||'—';
-  document.getElementById('mNT').textContent=cat+' - '+typ+' - '+host;
-  document.getElementById('mNB').textContent=document.getElementById('f_mom').value||'(No content)';
+function upMNP() {
+  var cat = document.getElementById('f_cat').value || '—', typ = document.getElementById('f_type').value || '—', host = hostName || '—';
+  document.getElementById('mNT').textContent = cat + ' - ' + typ + ' - ' + host;
+  document.getElementById('mNB').textContent = document.getElementById('f_mom').value || '(No content)';
 }
-function upCNP(){
-  var cat=document.getElementById('f_ccat').value||'—',res=document.getElementById('f_cres').value||'—',own=callOwnerName||hostName||'—';
-  document.getElementById('cNT').textContent=cat+' - '+res+' - '+own;
-  document.getElementById('cNB').textContent=document.getElementById('f_csum').value||'(No content)';
+function upCNP() {
+  var cat = document.getElementById('f_ccat').value || '—', res = document.getElementById('f_cres').value || '—', own = callOwnerName || hostName || '—';
+  document.getElementById('cNT').textContent = cat + ' - ' + res + ' - ' + own;
+  document.getElementById('cNB').textContent = document.getElementById('f_csum').value || '(No content)';
 }
-
-document.getElementById('btnUp').addEventListener('click',function(){
-  var btn=this;btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Updating…';
-  var isM=aType==='meeting',ent=selAct._ent,aD={},nT='',nB='';
-  if(isM){
-    aD.Minutes_of_the_Meeting=document.getElementById('f_mom').value;
-    aD.Category=document.getElementById('f_cat').value;
-    aD.Meeting_Type=document.getElementById('f_type').value;
-    aD.Meeting_Status=document.getElementById('f_mstat').value;
-    var cdt=document.getElementById('f_cdt').value;if(cdt)aD.Completed_Date_Time=cdt;
-    var jw=document.getElementById('f_joint').value;if(jw)aD.Joint_Meeting_With1=jw;
-    nT=(aD.Category||'—')+' - '+(aD.Meeting_Type||'—')+' - '+(hostName||'—');
-    nB=aD.Minutes_of_the_Meeting||'';
-  }else{
-    aD.Category_of_Call=document.getElementById('f_ccat').value;
-    aD.Call_Result=document.getElementById('f_cres').value;
-    aD.Description=document.getElementById('f_csum').value;
-    nT=(aD.Category_of_Call||'—')+' - '+(aD.Call_Result||'—')+' - '+(callOwnerName||hostName||'—');
-    nB=aD.Description||'';
+document.getElementById('btnUp').addEventListener('click', function() {
+  var btn = this; btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Updating…';
+  var isM = aType === 'meeting', ent = selAct._ent, aD = {}, nT = '', nB = '';
+  if (isM) {
+    aD.Minutes_of_the_Meeting = document.getElementById('f_mom').value;
+    aD.Category = document.getElementById('f_cat').value; aD.Meeting_Type = document.getElementById('f_type').value;
+    aD.Meeting_Status = document.getElementById('f_mstat').value;
+    var cdt = document.getElementById('f_cdt').value; if (cdt) aD.Completed_Date_Time = cdt;
+    var jw = document.getElementById('f_joint').value; if (jw) aD.Joint_Meeting_With1 = jw;
+    nT = (aD.Category || '—') + ' - ' + (aD.Meeting_Type || '—') + ' - ' + (hostName || '—');
+    nB = aD.Minutes_of_the_Meeting || '';
+  } else {
+    aD.Category_of_Call = document.getElementById('f_ccat').value; aD.Call_Result = document.getElementById('f_cres').value;
+    aD.Description = document.getElementById('f_csum').value;
+    nT = (aD.Category_of_Call || '—') + ' - ' + (aD.Call_Result || '—') + ' - ' + (callOwnerName || hostName || '—');
+    nB = aD.Description || '';
   }
-  var lD={};
-  if(isM){
-    lD.Lead_Status=document.getElementById('f_ls_m').value;
-    var q=document.getElementById('f_ql_m').value;if(q)lD.Quality=q;
-    var p=document.getElementById('f_lp').value;if(p)lD.Star_Rating=p;
-  }else{
-    lD.Lead_Status=document.getElementById('f_ls_c').value;
-    var q2=document.getElementById('f_ql_c').value;if(q2)lD.Quality=q2;
-  }
-  var noteD={Note_Title:nT,Note_Content:nB,Parent_Id:lead.id,se_module:"Leads"};
-
+  var lD = {};
+  if (isM) { lD.Lead_Status = document.getElementById('f_ls_m').value; var q = document.getElementById('f_ql_m').value; if (q) lD.Quality = q; var p = document.getElementById('f_lp').value; if (p) lD.Star_Rating = p; }
+  else { lD.Lead_Status = document.getElementById('f_ls_c').value; var q2 = document.getElementById('f_ql_c').value; if (q2) lD.Quality = q2; }
+  var noteD = { Note_Title: nT, Note_Content: nB, Parent_Id: lead.id, se_module: "Leads" };
+  log('Updating: ' + ent + ' + Lead + Note');
   Promise.all([
-    ZOHO.CRM.API.updateRecord({Entity:ent,RecordID:selAct.id,APIData:aD}),
-    ZOHO.CRM.API.updateRecord({Entity:"Leads",RecordID:lead.id,APIData:lD}),
-    ZOHO.CRM.API.insertRecord({Entity:"Notes",APIData:noteD})
-  ]).then(function(){
-    toast(isM?'Meeting, lead & note updated!':'Call, lead & note updated!');
-    btn.innerHTML='Update & Continue →';btn.disabled=false;go(3);
-  }).catch(function(e){
-    console.error(e);toast('Error. Check console.');
-    btn.innerHTML='Update & Continue →';btn.disabled=false;
+    ZOHO.CRM.API.updateRecord({ Entity: ent, RecordID: selAct.id, APIData: aD }),
+    ZOHO.CRM.API.updateRecord({ Entity: "Leads", RecordID: lead.id, APIData: lD }),
+    ZOHO.CRM.API.insertRecord({ Entity: "Notes", APIData: noteD })
+  ]).then(function() {
+    toast(isM ? 'Meeting, lead & note updated!' : 'Call, lead & note updated!');
+    log('All updates successful!', 'ok');
+    btn.innerHTML = 'Update & Continue →'; btn.disabled = false; go(3);
+  }).catch(function(e) {
+    log('Update error: ' + JSON.stringify(e), 'err'); toast('Error. Check debug log.');
+    btn.innerHTML = 'Update & Continue →'; btn.disabled = false;
   });
 });
 
-// STEP 3
-function selFU(t){
-  fuType=t;
-  document.querySelectorAll('#step-3 .tb').forEach(function(e){e.classList.toggle('active',e.dataset.ft===t)});
-  document.getElementById('fuForm').classList.remove('hidden');valFU();
+// ═══ STEP 3 ═══
+function selFU(t) {
+  fuType = t;
+  document.querySelectorAll('#step-3 .tb').forEach(function(e) { e.classList.toggle('active', e.dataset.ft === t) });
+  document.getElementById('fuForm').classList.remove('hidden'); valFU();
 }
-['fu_sub','fu_date','fu_time'].forEach(function(id){document.getElementById(id).addEventListener('input',valFU)});
-function valFU(){
-  document.getElementById('btnFU').disabled=!(fuType&&document.getElementById('fu_sub').value.trim()&&document.getElementById('fu_date').value&&document.getElementById('fu_time').value);
+['fu_sub', 'fu_date', 'fu_time'].forEach(function(id) { document.getElementById(id).addEventListener('input', valFU) });
+function valFU() {
+  document.getElementById('btnFU').disabled = !(fuType && document.getElementById('fu_sub').value.trim() && document.getElementById('fu_date').value && document.getElementById('fu_time').value);
 }
-document.getElementById('btnFU').addEventListener('click',function(){
-  var btn=this;btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Creating…';
-  var d=document.getElementById('fu_date').value,t=document.getElementById('fu_time').value;
-  var startDT=d+'T'+t+':00+05:30';
-  var endD=new Date(d+'T'+t);endD.setHours(endD.getHours()+1);
-  var pad=function(n){return n<10?'0'+n:''+n};
-  var endDT=endD.getFullYear()+'-'+pad(endD.getMonth()+1)+'-'+pad(endD.getDate())+'T'+pad(endD.getHours())+':'+pad(endD.getMinutes())+':00+05:30';
-  var apiD,ent;
-  if(fuType==='call'){ent='Calls';apiD={Subject:document.getElementById('fu_sub').value,Call_Start_Time:startDT,Call_Type:"Outbound",Who_Id:lead.id,Description:document.getElementById('fu_desc').value}}
-  else{ent='Events';apiD={Event_Title:document.getElementById('fu_sub').value,Start_DateTime:startDT,End_DateTime:endDT,Who_Id:lead.id,Description:document.getElementById('fu_desc').value}}
-  ZOHO.CRM.API.insertRecord({Entity:ent,APIData:apiD}).then(function(){
-    toast('Follow-up created!');btn.innerHTML='Create & Continue →';btn.disabled=false;go(4);
-  }).catch(function(){toast('Error.');btn.innerHTML='Create & Continue →';btn.disabled=false});
+document.getElementById('btnFU').addEventListener('click', function() {
+  var btn = this; btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Creating…';
+  var d = document.getElementById('fu_date').value, t = document.getElementById('fu_time').value;
+  var startDT = d + 'T' + t + ':00+05:30';
+  var endD = new Date(d + 'T' + t); endD.setHours(endD.getHours() + 1);
+  var pad = function(n) { return n < 10 ? '0' + n : '' + n };
+  var endDT = endD.getFullYear() + '-' + pad(endD.getMonth() + 1) + '-' + pad(endD.getDate()) + 'T' + pad(endD.getHours()) + ':' + pad(endD.getMinutes()) + ':00+05:30';
+  var apiD, ent;
+  if (fuType === 'call') { ent = 'Calls'; apiD = { Subject: document.getElementById('fu_sub').value, Call_Start_Time: startDT, Call_Type: "Outbound", Who_Id: lead.id, Description: document.getElementById('fu_desc').value } }
+  else { ent = 'Events'; apiD = { Event_Title: document.getElementById('fu_sub').value, Start_DateTime: startDT, End_DateTime: endDT, Who_Id: lead.id, Description: document.getElementById('fu_desc').value } }
+  log('Creating follow-up ' + ent);
+  ZOHO.CRM.API.insertRecord({ Entity: ent, APIData: apiD }).then(function() {
+    toast('Follow-up created!'); log('Follow-up created', 'ok'); btn.innerHTML = 'Create & Continue →'; btn.disabled = false; go(4);
+  }).catch(function(e) { log('Follow-up error: ' + JSON.stringify(e), 'err'); toast('Error.'); btn.innerHTML = 'Create & Continue →'; btn.disabled = false });
 });
 
-// STEP 4
-function fetchDeals(){
-  var c=document.getElementById('dealList');
-  c.innerHTML='<div class="loading"><div class="spinner spinner-lg"></div><br/>Loading deals…</div>';
-  document.getElementById('dealForm').classList.add('hidden');document.getElementById('btnDeal').disabled=true;selDeal=null;
-  ZOHO.CRM.API.searchRecord({Entity:"Deals",Type:"criteria",Query:"(Contact_Name:equals:"+ln()+")"}).then(function(r){
-    var deals=(r&&r.data)?r.data:[];
-    if(!deals.length){c.innerHTML='<div class="empty"><div class="ei">💼</div>No deals found.</div>';return}
-    c.innerHTML=deals.map(function(d){
-      return'<div class="li" data-id="'+d.id+'" onclick="pickD(\''+d.id+'\')"><div class="li-l"><div class="li-n">'+(d.Deal_Name||'Untitled')+'</div><div class="li-m">'+(d.Stage||'—')+' · '+(d.Amount?'₹'+Number(d.Amount).toLocaleString():'No amt')+'</div></div><div class="li-b">'+(d.Stage||'—')+'</div></div>';
-    }).join('');
-  }).catch(function(){c.innerHTML='<div class="empty"><div class="ei">⚠️</div>Could not load.</div>'});
+// ═══ STEP 4 ═══
+function fetchDeals() {
+  var c = document.getElementById('dealList');
+  c.innerHTML = '<div class="loading"><div class="spinner spinner-lg"></div><br/>Loading deals…</div>';
+  document.getElementById('dealForm').classList.add('hidden'); document.getElementById('btnDeal').disabled = true; selDeal = null;
+  log('Fetching deals for: ' + ln());
+  ZOHO.CRM.API.searchRecord({ Entity: "Deals", Type: "criteria", Query: "(Contact_Name:equals:" + ln() + ")" })
+    .then(function(r) {
+      var deals = (r && r.data) ? r.data : [];
+      log('Found ' + deals.length + ' deals', 'ok');
+      if (!deals.length) { c.innerHTML = '<div class="empty"><div class="ei">💼</div>No deals found.</div>'; return }
+      c.innerHTML = deals.map(function(d) {
+        return '<div class="li" data-id="' + d.id + '" onclick="pickD(\'' + d.id + '\')"><div class="li-l"><div class="li-n">' + (d.Deal_Name || 'Untitled') + '</div><div class="li-m">' + (d.Stage || '—') + ' · ' + (d.Amount ? '₹' + Number(d.Amount).toLocaleString() : 'No amt') + '</div></div><div class="li-b">' + (d.Stage || '—') + '</div></div>';
+      }).join('');
+    }).catch(function(e) { log('Deals error: ' + JSON.stringify(e), 'err'); c.innerHTML = '<div class="empty"><div class="ei">⚠️</div>Could not load.</div>' });
 }
-function pickD(id){
-  document.querySelectorAll('#dealList .li').forEach(function(e){e.classList.toggle('sel',e.dataset.id===id)});
-  ZOHO.CRM.API.getRecord({Entity:"Deals",RecordID:id}).then(function(r){
-    selDeal=r.data[0];
-    sv('d_stage',selDeal.Stage||'');document.getElementById('d_amt').value=selDeal.Amount||'';
-    document.getElementById('d_cdate').value=selDeal.Closing_Date||'';document.getElementById('d_notes').value=selDeal.Description||'';
-    document.getElementById('dealForm').classList.remove('hidden');document.getElementById('btnDeal').disabled=false;
-  });
+function pickD(id) {
+  document.querySelectorAll('#dealList .li').forEach(function(e) { e.classList.toggle('sel', e.dataset.id === id) });
+  ZOHO.CRM.API.getRecord({ Entity: "Deals", RecordID: id }).then(function(r) {
+    selDeal = r.data[0]; sv('d_stage', selDeal.Stage || '');
+    document.getElementById('d_amt').value = selDeal.Amount || ''; document.getElementById('d_cdate').value = selDeal.Closing_Date || '';
+    document.getElementById('d_notes').value = selDeal.Description || '';
+    document.getElementById('dealForm').classList.remove('hidden'); document.getElementById('btnDeal').disabled = false;
+  }).catch(function(e) { log('pickD error: ' + JSON.stringify(e), 'err') });
 }
-document.getElementById('btnDeal').addEventListener('click',function(){
-  if(!selDeal)return;var btn=this;btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Updating…';
-  ZOHO.CRM.API.updateRecord({Entity:"Deals",RecordID:selDeal.id,APIData:{
-    Stage:document.getElementById('d_stage').value,Amount:document.getElementById('d_amt').value,
-    Closing_Date:document.getElementById('d_cdate').value,Description:document.getElementById('d_notes').value
-  }}).then(function(){toast('Deal updated!');btn.innerHTML='Finish ✓';btn.disabled=false;step=5;upSt()})
-  .catch(function(){toast('Error.');btn.innerHTML='Finish ✓';btn.disabled=false});
+document.getElementById('btnDeal').addEventListener('click', function() {
+  if (!selDeal) return; var btn = this; btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Updating…';
+  ZOHO.CRM.API.updateRecord({ Entity: "Deals", RecordID: selDeal.id, APIData: {
+    Stage: document.getElementById('d_stage').value, Amount: document.getElementById('d_amt').value,
+    Closing_Date: document.getElementById('d_cdate').value, Description: document.getElementById('d_notes').value
+  } }).then(function() { toast('Deal updated!'); log('Deal updated', 'ok'); btn.innerHTML = 'Finish ✓'; btn.disabled = false; step = 5; upSt() })
+    .catch(function(e) { log('Deal error: ' + JSON.stringify(e), 'err'); toast('Error.'); btn.innerHTML = 'Finish ✓'; btn.disabled = false });
 });
 
-function reset(){
-  step=0;lead=null;aType=null;selAct=null;fuType=null;selDeal=null;
-  document.getElementById('leadSearch').value='';document.getElementById('leadResults').innerHTML='';
-  document.getElementById('btnLead').disabled=true;document.getElementById('actList').innerHTML='';
-  document.getElementById('btnAct').disabled=true;
-  document.getElementById('mF').classList.add('hidden');document.getElementById('cF').classList.add('hidden');
-  document.getElementById('fuForm').classList.add('hidden');document.getElementById('dealForm').classList.add('hidden');
-  document.querySelectorAll('.tb').forEach(function(e){e.classList.remove('active')});
+function reset() {
+  step = 0; lead = null; aType = null; selAct = null; fuType = null; selDeal = null;
+  document.getElementById('leadSearch').value = ''; document.getElementById('leadResults').innerHTML = '';
+  document.getElementById('btnLead').disabled = true; document.getElementById('actList').innerHTML = '';
+  document.getElementById('btnAct').disabled = true;
+  document.getElementById('mF').classList.add('hidden'); document.getElementById('cF').classList.add('hidden');
+  document.getElementById('fuForm').classList.add('hidden'); document.getElementById('dealForm').classList.add('hidden');
+  document.querySelectorAll('.tb').forEach(function(e) { e.classList.remove('active') });
   upSt();
 }
 </script>
